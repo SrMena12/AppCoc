@@ -1,0 +1,51 @@
+CREATE DATABASE IF NOT EXISTS proyectococ;
+
+USE proyectococ;
+
+CREATE TABLE IF NOT EXISTS Sanciones (
+  id_sancion INT AUTO_INCREMENT,
+  nombre VARCHAR(255) NOT NULL,
+  descripcion VARCHAR(255) NOT NULL,
+  id_clanero INT,
+  PRIMARY KEY (id_sancion),
+  FOREIGN KEY (id_clanero) REFERENCES Clanero (id_clanero) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Clanero (
+  id_clanero INT AUTO_INCREMENT,
+  nombre VARCHAR(255) NOT NULL,
+  rango VARCHAR(255) NOT NULL,
+  estado VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id_clanero)
+);
+
+CREATE TABLE IF NOT EXISTS Guerra (
+  id_guerra INT AUTO_INCREMENT,
+  fecha_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  rival VARCHAR(255) NOT NULL,
+  resultado VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id_guerra)
+);
+
+CREATE TABLE IF NOT EXISTS Participa (
+  id_guerra INT,
+  id_clanero INT,
+  FOREIGN KEY (id_guerra) REFERENCES Guerra (id_guerra),
+  FOREIGN KEY (id_clanero) REFERENCES Clanero (id_clanero)
+);
+
+INSERT INTO Clanero (nombre, rango, estado) VALUES
+('SrMena', 'lider', 'activo'),
+('MrSacri', 'colider', 'activo'),
+('XxIvan57xX', 'miembro', 'activo');
+
+INSERT INTO Guerra (rival, resultado) VALUES
+('bagh', 'victoria');
+
+INSERT INTO Participa (id_guerra, id_clanero) VALUES
+((SELECT id_guerra FROM Guerra WHERE rival = 'bagh'), (SELECT id_clanero FROM Clanero WHERE nombre = 'SrMena')),
+((SELECT id_guerra FROM Guerra WHERE rival = 'bagh'), (SELECT id_clanero FROM Clanero WHERE nombre = 'MrSacri'));
+
+INSERT INTO Sanciones (nombre, descripcion, id_clanero) VALUES
+('Sanción 1', 'Descripción de la sanción 1', 1),
+('Sanción 2', 'Descripción de la sanción 2', 2);
