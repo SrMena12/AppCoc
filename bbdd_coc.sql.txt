@@ -1,6 +1,13 @@
 CREATE DATABASE IF NOT EXISTS proyectococ;
 
 USE proyectococ;
+CREATE TABLE IF NOT EXISTS Clanero (
+  id_clanero INT AUTO_INCREMENT,
+  nombre VARCHAR(255) NOT NULL,
+  rango VARCHAR(255) NOT NULL,
+  estado VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id_clanero)
+);
 
 CREATE TABLE IF NOT EXISTS Sanciones (
   id_sancion INT AUTO_INCREMENT,
@@ -9,14 +16,6 @@ CREATE TABLE IF NOT EXISTS Sanciones (
   id_clanero INT,
   PRIMARY KEY (id_sancion),
   FOREIGN KEY (id_clanero) REFERENCES Clanero (id_clanero) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Clanero (
-  id_clanero INT AUTO_INCREMENT,
-  nombre VARCHAR(255) NOT NULL,
-  rango VARCHAR(255) NOT NULL,
-  estado VARCHAR(255) NOT NULL,
-  PRIMARY KEY (id_clanero)
 );
 
 CREATE TABLE IF NOT EXISTS Guerra (

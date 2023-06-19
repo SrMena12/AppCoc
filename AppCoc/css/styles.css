@@ -1,0 +1,16 @@
+
+
+ .input-container input[type="search"]{
+  padding: 12px 20px;
+  border-radius: 5px;
+  background-color: rgb(221,221,221);
+  width: 190px;
+ }
+ 
+ @media screen and (max-width: 425px){
+  #botonincidencia{
+    margin-left: 6px;
+    height: 55px;
+  }
+
+ }
