@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" />
   <link rel="stylesheet" href="../css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/spinkit@1.2.5/css/spinners.css">
   <style>
   table {
     width: 100%;
@@ -76,7 +77,7 @@
 </head>
 
 <body>
-  <?php require_once('header.php'); ?>
+  <?php require_once('funciones/header.php'); ?>
   <article>
     <section>
       <div class="container px-4 py-5" id="Incidencias">

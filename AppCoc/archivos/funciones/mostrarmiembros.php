@@ -47,15 +47,36 @@ try {
         echo '<button class="btn btn-danger" name="eliminar" title="Eliminar" style="width: 30px; height: 30px; padding: 0; margin-right: 5px;"><i class="material-icons-outlined" style="font-size: 16px; line-height: 30px;">person_remove</i></button>';
         echo '</form>';
 
-        echo '<button class="btn btn-primary" title="Ver sanciones" style="width: 30px; height: 30px; padding: 0; margin-right: 5px;"><i class="material-icons-outlined" style="font-size: 16px; line-height: 30px;">gavel</i></button>';
+        echo '<a class="btn btn-primary" title="Ver sanciones" href="funciones/mostrarsancionesusuario.php?id_clanero=' . $id_clanero . '" style="width: 30px; height: 30px; padding: 0; margin-right: 5px;"><i class="material-icons-outlined" style="font-size: 16px; line-height: 30px;">gavel</i></a>';
+
         echo '</td>';
         echo '</tr>';
     }
     echo '</tbody></table></div>';
 
-    
-
 } catch (PDOException $e) {
     echo 'Error con la base de datos: ' . $e->getMessage();
 }
 ?>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var filtroInput = document.getElementById("filtro");
+
+    filtroInput.addEventListener("input", function () {
+        var filtro = filtroInput.value.toLowerCase();
+        var filas = document.querySelectorAll("#tablaScript tbody tr");
+
+        for (var i = 0; i < filas.length; i++) {
+            var fila = filas[i];
+            var textoFila = fila.innerText.toLowerCase();
+
+            if (textoFila.includes(filtro)) {
+                fila.style.display = "";
+            } else {
+                fila.style.display = "none";
+            }
+        }
+    });
+});
+</script>

@@ -37,6 +37,7 @@ if (isset($_GET["id_clanero"])) {
     <title>Formulario Editar Clanero</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         body {
             background-color: #f8f9fa;
@@ -78,6 +79,11 @@ if (isset($_GET["id_clanero"])) {
             color: #007bff;
         }
     </style>
+    <script>
+        setTimeout(function() {
+            window.location.href = "../miembros.php";
+        }, 4000); // 4 segundos
+    </script>
 </head>
 <body>
 

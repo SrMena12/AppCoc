@@ -37,6 +37,7 @@ function mostrarPagina(pagina, filasPorPagina) {
       paginacion.appendChild(li);
     }
   }
+  
 // Filtro de búsqueda
 document.addEventListener("DOMContentLoaded", function () {
   var filtroInput = document.getElementById("filtro");
