@@ -79,11 +79,6 @@ if (isset($_GET["id_clanero"])) {
             color: #007bff;
         }
     </style>
-    <script>
-        setTimeout(function() {
-            window.location.href = "../miembros.php";
-        }, 4000); // 4 segundos
-    </script>
 </head>
 <body>
 

@@ -57,6 +57,8 @@
             <option value="1 Guerra">1 Guerra</option>
             <option value="2 Guerras">2 Guerras</option>
             <option value="Expulsado">Expulsado</option>
+            <option value="Tropas Desniveladas">Tropas Desniveladas</option>
+            <option value="Malos Ataques">Malos Ataques</option>
         </select>
         </div>
         <div class="form-group">
@@ -68,7 +70,7 @@
             <select class="form-control" id="sancionado" name="sancionado" required>
                 <?php
                 require_once('conexion.php');
-                $query = "SELECT id_clanero, nombre FROM clanero";
+                $query = "SELECT id_clanero, nombre FROM clanero WHERE estado <> 'Expulsado' ";
                 $result = $db->query($query);
 
                 foreach ($result as $row) {
@@ -86,10 +88,7 @@
 <a href="../sanciones.php" class="btn-back"><i class="material-icons">arrow_back</i></a>
 
 <?php
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
     $motivo = $_POST['motivo'];
     $sancionado = $_POST['sancionado'];
     $sancion = $_POST['sancion'];
@@ -98,6 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query = "INSERT INTO sanciones (nombre, descripcion, id_clanero) VALUES (?, ?, ?)";
         $preparada_sancion = $db->prepare($query);
         $preparada_sancion->execute(array($sancion, $motivo, $sancionado));
+
+        // Si la sanción es "Expulsado", actualiza el estado del clanero
+        if ($sancion === "Expulsado") {
+            $query = "UPDATE clanero SET estado = 'Expulsado' WHERE id_clanero = ?";
+            $preparada_estado = $db->prepare($query);
+            $preparada_estado->execute(array($sancionado));
+        }
+
         echo '<div class="container mt-3"><div class="alert alert-success">Sanción añadida correctamente.</div></div>';
     } catch (PDOException $e) {
         echo '<div class="container mt-3"><div class="alert alert-danger">Error al añadir sanción: ' . $e->getMessage() . '</div></div>';

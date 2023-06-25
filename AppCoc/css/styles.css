@@ -67,6 +67,11 @@ tr:hover {
         background-color: red;
         color: white;
 }
+
+.nombre-cell {
+  text-align: right;
+  width: 150px; /* Puedes ajustar el ancho según tus necesidades */
+}
  
  @media screen and (max-width: 425px){
   #botonincidencia{

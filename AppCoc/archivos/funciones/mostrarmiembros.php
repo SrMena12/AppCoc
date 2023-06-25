@@ -3,7 +3,7 @@ require_once('conexion.php');
 $contador = 0;
 
 try {
-    $miembros = "SELECT * FROM clanero";
+    $miembros = "SELECT * FROM clanero WHERE estado != 'Expulsado'";
     $miembros = $db->query($miembros);
     echo '<div class="tablaInci table-responsive-lg"> <table id="tablaScript" class="table table-striped table-hover text-center">';
     echo '<thead style="background-color: #444; color: #fff; font-weight: bold;">';
@@ -33,9 +33,32 @@ try {
             $filaClass = 'expulsado';
         }
 
+        // Verificar si tiene sanciones activas
+        $tiene_sancion = false;
+
+        $consulta_sanciones = "SELECT s.id_sancion, s.nombre, s.descripcion, s.estado, c.nombre AS nombre_clanero 
+                        FROM sanciones s 
+                        INNER JOIN clanero c ON s.id_clanero = c.id_clanero
+                        WHERE s.id_clanero = ? AND s.estado = 'Sin cumplir'";
+        $stmt = $db->prepare($consulta_sanciones);
+        $stmt->execute([$id_clanero]);
+        $sanciones = $stmt->fetchAll();
+
+        $tiene_sancion = (count($sanciones) > 0); // Verificar si tiene sanciones sin cumplir
+
+        if (count($sanciones) > 0) {
+            $tiene_sancion = true;
+        }
+
         echo '<tr class="' . $filaClass . '">';
         echo '<th scope="row">' . $contador . '</th>';
-        echo '<td>' . $nombre . '</td>';
+        echo '<td>' . $nombre;
+
+        if ($tiene_sancion) {
+            echo '<span style="font-family: \'Material Icons Outlined\'; font-size: 20px; color: red; margin-left: 5px;">&#xe002;</span>';
+        }
+
+        echo '</td>';
         echo '<td>' . $rango . '</td>';
         echo '<td>' . $estado . '</td>';
         echo '<td style="width: 180px;" class="d-flex">'; // Agregamos la clase "d-flex"
@@ -54,29 +77,31 @@ try {
     }
     echo '</tbody></table></div>';
 
+    echo '<a class="btn btn-primary" title="Expulsados" href="funciones/expulsados.php">Expulsados</a>';
+
 } catch (PDOException $e) {
     echo 'Error con la base de datos: ' . $e->getMessage();
 }
 ?>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    var filtroInput = document.getElementById("filtro");
+    document.addEventListener("DOMContentLoaded", function () {
+        var filtroInput = document.getElementById("filtro");
 
-    filtroInput.addEventListener("input", function () {
-        var filtro = filtroInput.value.toLowerCase();
-        var filas = document.querySelectorAll("#tablaScript tbody tr");
+        filtroInput.addEventListener("input", function () {
+            var filtro = filtroInput.value.toLowerCase();
+            var filas = document.querySelectorAll("#tablaScript tbody tr");
 
-        for (var i = 0; i < filas.length; i++) {
-            var fila = filas[i];
-            var textoFila = fila.innerText.toLowerCase();
+            for (var i = 0; i < filas.length; i++) {
+                var fila = filas[i];
+                var textoFila = fila.innerText.toLowerCase();
 
-            if (textoFila.includes(filtro)) {
-                fila.style.display = "";
-            } else {
-                fila.style.display = "none";
+                if (textoFila.includes(filtro)) {
+                    fila.style.display = "";
+                } else {
+                    fila.style.display = "none";
+                }
             }
-        }
+        });
     });
-});
 </script>

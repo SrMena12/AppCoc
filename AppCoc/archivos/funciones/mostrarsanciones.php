@@ -19,27 +19,32 @@ if ($result->rowCount() > 0) {
               </thead>
               <tbody>';
 
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        $id_sancion = $row['id_sancion'];
-        $nombre_sancion = $row['nombre'];
-        $descripcion_sancion = $row['descripcion'];
-        $nombre_clanero = $row['nombre_clanero'];
-        $estado_sancion = $row['estado'];
-
-        $color = ($estado_sancion == 'Cumplida') ? '#c2f0c2' : '#f8d7da';
-
-        echo '<tr style="background-color: ' . $color . '">
-                <td>' . $id_sancion . '</td>
-                <td>' . $nombre_sancion . '</td>
-                <td>' . $descripcion_sancion . '</td>
-                <td>' . $nombre_clanero . '</td>
-                <td><span id="estado-' . $id_sancion . '">' . $estado_sancion . '</span></td>
-                <td style="white-space: nowrap;">
-                  <button onclick="eliminarSancion(' . $id_sancion . ')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                  <button onclick="editarEstado(' . $id_sancion . ', \'' . $estado_sancion . '\')" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                </td>
-              </tr>';
-    }
+              foreach ($result as $row) {
+                $id_sancion = $row['id_sancion'];
+                $nombre_sancion = $row['nombre'];
+                $descripcion_sancion = $row['descripcion'];
+                $nombre_clanero = $row['nombre_clanero'];
+                $estado_sancion = $row['estado'];
+            
+                // Omitir las sanciones con nombre "Expulsado"
+                if ($nombre_sancion == 'Expulsado') {
+                    continue;
+                }
+            
+                $color = ($estado_sancion == 'Cumplida') ? '#c2f0c2' : '#f8d7da';
+            
+                echo '<tr style="background-color: ' . $color . '">
+                        <td>' . $id_sancion . '</td>
+                        <td>' . $nombre_sancion . '</td>
+                        <td>' . $descripcion_sancion . '</td>
+                        <td>' . $nombre_clanero . '</td>
+                        <td><span id="estado-' . $id_sancion . '">' . $estado_sancion . '</span></td>
+                        <td style="white-space: nowrap;">
+                          <button onclick="eliminarSancion(' . $id_sancion . ')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                          <button onclick="editarEstado(' . $id_sancion . ', \'' . $estado_sancion . '\')" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+                        </td>
+                      </tr>';
+            }
 
     echo '</tbody>
           </table>
@@ -47,6 +52,8 @@ if ($result->rowCount() > 0) {
 } else {
     echo '<div class="alert alert-info">No se encontraron sanciones.</div>';
 }
+
+echo '<a class="btn btn-primary" title="Expulsados" href="funciones/expulsados.php">Expulsados</a>';
 ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
